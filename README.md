@@ -13,6 +13,7 @@ RU: Создание новых произвольных переменных, �
 Подключение модуля
 1. Добавим через phpmyadmin в MySQL базу новый SQL запрос
 
+
 	CREATE TABLE IF NOT EXISTS `s_newmyvariables` (
 	`newmyvariables_id` int(11) NOT NULL AUTO_INCREMENT,
 	`name` varchar(255) NOT NULL DEFAULT '',
@@ -30,43 +31,50 @@ RU: Создание новых произвольных переменных, �
 3. Открываем файл api/Simpla.php
 
 после строки
+
 	'settings' => 'Settings',
 	
 пишем
+
 	'newmyvariables'=> 'Newmyvariables', 
 	
 4. Далее открываем simpla/SettingsAdmin.php
 
 после строки
+
 	$this->design->assign('managers', $managers);
 	
 пишем
+
 	$this->design->assign('newmyvariables', $this->newmyvariables);
 	$this->design->assign('myvar', $this->newmyvariables->get_newmyvariables());
 	
 5. В этом же файле (чуть ниже)
 
 после строки
+
 	if($this->request->method('POST'))
 	{
 	
 пишем
-	if (!empty($_POST['new_name']) && !empty($_POST['new_name_label'])) {
+
+    if (!empty($_POST['new_name']) && !empty($_POST['new_name_label'])) {
     $names[0] = 'myvar_'.$this - > request - > post('new_name');
     $names[1] = $this - > request - > post('new_name_label');
     $this - > newmyvariables - > new_name = $names;
 	}
 
-	$this - > design - > assign('myvar', $this - > newmyvariables - > get_newmyvariables());
-	foreach($_POST as $key => $value) {
-		if (strpos($key, 'myvar') === 0) {
-			$this - > settings - > $key = $value;
-		}
-	}
+    $this - > design - > assign('myvar', $this - > newmyvariables - > get_newmyvariables());
+    foreach($_POST as $key => $value) {
+    	if (strpos($key, 'myvar') === 0) {
+    		$this - > settings - > $key = $value;
+    	}
+    }
 	
 6. И последний файл simpla/design/html/settings.tpl
 
 находим и заменяем (почти в самом конце)
+
 	<input class="button_green button_save" type="submit" name="save" value="Сохранить" />
 	
 пишем
